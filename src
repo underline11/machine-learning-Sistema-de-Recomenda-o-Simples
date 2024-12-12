@@ -1,0 +1,54 @@
+import pandas as pd
+import numpy as np
+from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.preprocessing import MinMaxScaler
+
+# Criação de dados fictícios
+filmes = pd.DataFrame({
+    'FilmeID': [1, 2, 3, 4, 5],
+    'Título': ['Inception', 'Toy Story', 'Avengers', 'Titanic', 'The Matrix'],
+    'Gênero': ['Ação', 'Animação', 'Ação', 'Romance', 'Ficção Científica'],
+    'Ano': [2010, 1995, 2012, 1997, 1999]
+})
+
+avaliacoes = pd.DataFrame({
+    'UsuarioID': [1, 1, 2, 2, 3, 3, 4, 4, 5, 5],
+    'FilmeID': [1, 2, 2, 3, 3, 4, 4, 5, 1, 5],
+    'Nota': [5, 4, 5, 4, 3, 4, 5, 5, 2, 4]
+})
+
+# Criar uma matriz de usuário x filme
+matriz_avaliacoes = avaliacoes.pivot(index='UsuarioID', columns='FilmeID', values='Nota').fillna(0)
+
+# Calcular a similaridade entre os usuários
+similaridade_usuarios = cosine_similarity(matriz_avaliacoes)
+
+# Transformar a similaridade em um DataFrame para melhor visualização
+similaridade_df = pd.DataFrame(similaridade_usuarios, index=matriz_avaliacoes.index, columns=matriz_avaliacoes.index)
+
+# Função para recomendar filmes
+
+def recomendar_filmes(usuario_id, num_recomendacoes=3):
+    # Selecionar similaridades do usuário
+    similaridades = similaridade_df[usuario_id]
+    
+    # Obter os usuários mais similares ao usuário atual
+    usuarios_similares = similaridades.sort_values(ascending=False).index[1:]
+
+    # Obter os filmes avaliados pelos usuários similares
+    filmes_recomendados = []
+    for usuario_similar in usuarios_similares:
+        filmes_usuario = avaliacoes[avaliacoes['UsuarioID'] == usuario_similar]
+        filmes_recomendados.extend(filmes_usuario['FilmeID'].tolist())
+
+    # Remover os filmes já avaliados pelo usuário atual
+    filmes_usuario_atual = avaliacoes[avaliacoes['UsuarioID'] == usuario_id]['FilmeID'].tolist()
+    filmes_recomendados = list(set(filmes_recomendados) - set(filmes_usuario_atual))
+
+    # Retornar informações sobre os filmes recomendados
+    return filmes[filmes['FilmeID'].isin(filmes_recomendados)].head(num_recomendacoes)
+
+# Exemplo de uso
+usuario_exemplo = 1
+print(f"Filmes recomendados para o usuário {usuario_exemplo}:\n")
+print(recomendar_filmes(usuario_exemplo))
