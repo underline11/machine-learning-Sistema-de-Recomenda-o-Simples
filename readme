@@ -1,0 +1,99 @@
+# Sistema de Recomendação Simples
+
+Este é um projeto de exemplo para um sistema de recomendação baseado em similaridade entre usuários. O objetivo é sugerir filmes para os usuários com base em suas avaliações anteriores e nas avaliações de outros usuários similares.
+
+## Funcionalidades
+
+- Calcula similaridades entre usuários utilizando a métrica de cosseno.
+- Recomenda filmes para um usuário com base nas avaliações de usuários similares.
+- Utiliza um conjunto de dados fictício de filmes e avaliações.
+
+## Requisitos
+
+Certifique-se de ter as seguintes bibliotecas Python instaladas:
+
+- `pandas`
+- `numpy`
+- `scikit-learn`
+
+Para instalar as dependências, execute:
+
+
+pip install pandas numpy scikit-learn
+```
+
+## Uso
+
+1. Clone este repositório:
+
+
+git clone https://github.com/seu-usuario/sistema-recomendacao.git
+```
+
+2. Navegue até o diretório do projeto:
+
+
+cd sistema-recomendacao
+```
+
+3. Execute o script principal:
+
+
+python sistema_recomendacao.py
+```
+
+4. Exemplo de saída para o usuário com ID 1:
+
+```text
+Filmes recomendados para o usuário 1:
+         FilmeID        Título                   Gênero  Ano
+...
+```
+
+## Estrutura do Código
+
+- **Conjunto de dados fictício**:
+  - Tabela de filmes com informações como título, gênero e ano de lançamento.
+  - Tabela de avaliações contendo usuários, filmes avaliados e notas.
+
+- **Etapas do sistema de recomendação**:
+  - Criação de uma matriz de usuário x filme.
+  - Cálculo da similaridade entre usuários usando o cosseno.
+  - Função para recomendar filmes que os usuários similares avaliaram bem.
+
+## Licença
+
+Este projeto está licenciado sob os termos da [Licença MIT](LICENSE).
+
+## Contribuição
+
+Contribuições são bem-vindas! Sinta-se à vontade para abrir issues ou pull requests com melhorias ou correções.
+
+---
+
+### Exemplo de Dados
+
+#### Filmes
+
+| FilmeID | Título       | Gênero            | Ano |
+|---------|--------------|-------------------|-----|
+| 1       | Inception    | Ação              | 2010|
+| 2       | Toy Story    | Animação          | 1995|
+| 3       | Avengers     | Ação              | 2012|
+| 4       | Titanic      | Romance           | 1997|
+| 5       | The Matrix   | Ficção Científica | 1999|
+
+#### Avaliações
+
+| UsuarioID | FilmeID | Nota |
+|-----------|---------|------|
+| 1         | 1       | 5    |
+| 1         | 2       | 4    |
+| 2         | 2       | 5    |
+| 2         | 3       | 4    |
+| 3         | 3       | 3    |
+| 3         | 4       | 4    |
+| 4         | 4       | 5    |
+| 4         | 5       | 5    |
+| 5         | 1       | 2    |
+| 5         | 5       | 4    |
